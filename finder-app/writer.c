@@ -7,7 +7,6 @@ int main(int argc, char** argv)
 
     if (argc < 3) 
     {
-        printf("Input arguments missing!\n");
         syslog(LOG_ERR, "Input arguments missing!");
 
         return 1;
