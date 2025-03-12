@@ -31,5 +31,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    fclose(fileptr);
+    closelog();
+
     return 0;
 }
