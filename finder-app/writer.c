@@ -1,32 +1,36 @@
 #include <stdio.h>
+#include <syslog.h>
 
 int main(int argc, char** argv)
 {
+    openlog(NULL, 0, LOG_USER);
+
     if (argc < 3) 
     {
         printf("Input arguments missing!\n");
+        syslog(LOG_ERR, "Input arguments missing!");
+
         return 1;
     }
 
     const char* writefile = argv[1];
     const char* writestr = argv[2];
-    printf("writefile: %s, writestr: %s\n", writefile, writestr);
 
+    syslog(LOG_DEBUG, "Writing %s to %s\n", writestr, writefile);
+    
     FILE* fileptr = fopen(writefile, "w");
     if (fileptr == NULL)
     {
-        printf("Failed to open file %s", writefile);
+        syslog(LOG_ERR, "Failed to open file %s\n", writefile);
         return 1;
     }
 
     int rc = fputs(writestr, fileptr);
     if (rc == EOF)
     {
-        printf("Failed to write string %s to file %s\n", writestr, writefile);
+        syslog(LOG_ERR, "Failed to write string %s to file %s\n", writestr, writefile);
         return 1;
     }
-
-    printf("String %s successfully written to file %s\n", writestr, writefile);
 
     return 0;
 }
